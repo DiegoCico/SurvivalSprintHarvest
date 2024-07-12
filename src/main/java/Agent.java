@@ -11,42 +11,32 @@ public class Agent {
     private Random random;
 
     public Agent() {
+        random = new Random();
         reset();
     }
 
-    public void reset(){
+    public void reset() {
         this.x = random.nextInt(500);
         this.y = random.nextInt(500);
-        this.energy = random.nextInt(100);
-        this.speed = random.nextFloat(15);
-        this.energy = random.nextInt(350);
+        this.energy = random.nextInt(100) + 50;
+        this.speed = random.nextFloat() * 10 + 1;
         this.initialEnergy = energy;
         this.hasEaten = false;
     }
 
-    // Method to move the agent towards the nearest energy source
     public void move(List<Food> foodSources) {
         if (foodSources.isEmpty()) {
-            // No food sources, the agent dies if it runs out of energy
             updateEnergy(-1);
-            if (energy <= 0) {
-                System.out.println("The agent has run out of energy and died.");
-            }
             return;
         }
 
         Food nearestFood = findNearestFood(foodSources);
         moveTowards(nearestFood);
 
-        // Decrease energy with each move
         updateEnergy(-1);
-        if (energy <= 0) {
-            System.out.println("The agent has run out of energy and died.");
-        }
     }
 
-    // Method to find the nearest food source
-    private Food findNearestFood(List<Food> foodSources) {
+    public Food findNearestFood(List<Food> foodSources) {
         Food nearestFood = null;
         double minDistance = Double.MAX_VALUE;
 
@@ -61,7 +51,6 @@ public class Agent {
         return nearestFood;
     }
 
-    // Method to move the agent towards a specific food source
     private void moveTowards(Food food) {
         if (food.getX() > this.x) {
             this.x += speed;
@@ -76,27 +65,28 @@ public class Agent {
         }
     }
 
-    // Method to calculate the distance between two points
     private double calculateDistance(int x1, int y1, int x2, int y2) {
         return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
 
-    // Method to update energy
     public void updateEnergy(int amount) {
         energy += amount;
         if (energy <= 0) {
-            // Agent dies if energy runs out
             System.out.println("The agent has run out of energy and died.");
         }
     }
 
-    // Method to eat food
     public void eat() {
         initialEnergy = energy;
         hasEaten = true;
     }
 
-    // Getters
+    public boolean isAtBase(Base base) {
+        return calculateDistance(this.x, this.y, base.getX(), base.getY()) < 10; // Allow some tolerance
+    }
+
+    // Getters and Setters...
+
     public int getX() {
         return x;
     }
@@ -117,7 +107,6 @@ public class Agent {
         return speed;
     }
 
-    // Setters
     public void setX(int x) {
         this.x = x;
     }
@@ -136,5 +125,9 @@ public class Agent {
 
     public void setSpeed(float speed) {
         this.speed = speed;
+    }
+
+    public int getInitialEnergy() {
+        return initialEnergy;
     }
 }

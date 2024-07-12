@@ -6,11 +6,13 @@ public class Food {
     private Random random;
 
     public Food() {
+        random = new Random();
         this.x = random.nextInt(500);
         this.y = random.nextInt(500);
     }
 
-    // Getters
+    // Getters and Setters...
+
     public int getX() {
         return x;
     }
@@ -19,7 +21,6 @@ public class Food {
         return y;
     }
 
-    // Setters
     public void setX(int x) {
         this.x = x;
     }
@@ -27,6 +28,4 @@ public class Food {
     public void setY(int y) {
         this.y = y;
     }
-
-
 }
